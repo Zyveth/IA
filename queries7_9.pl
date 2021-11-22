@@ -55,3 +55,8 @@ query8(Initial_Time/Final_Time,[Entrega|Entregas],[Entrega|T]):-
 query8(Initial_Time/Final_Time,[Entrega|Entregas],R):-
     query8(Initial_Time/Final_Time,Entregas,Y),
     R = Y.
+
+%================================
+% Query 9 - calcular o número de encomendas entregues e não entregues pela Green
+% Distribution, num determinado período de tempo;
+%================================
