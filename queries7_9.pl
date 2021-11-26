@@ -1,19 +1,24 @@
 :-style_check(-discontiguous).
 :-style_check(-singleton).
 
-:- use_module(library(lists)).
+:-use_module(library(lists)).
+
+:- include('Cliente.pl').
+:- include('Encomenda.pl').
+:- include('Entrega.pl').
+:- include('Estafeta.pl').
 
 %================================
 % Query 7 - identificar o número total de entregas pelos diferentes meios de transporte,
 % num determinado intervalo de tempo.
 %================================
 
-query7(Initial_Time/Final_Time,Entregas,bicicleta/X,moto/Y,carro/Z):-
-    query8(Initial_Time/Final_Time,Entregas,Time),
+query7(Initial_Time/Final_Time,"Bicicleta"/X,"Moto"/Y,"Carro"/Z):-
+    query81(Initial_Time/Final_Time,Time),
     filter_transports(Time,T),
-    count(T,bicicleta,X),
-    count(T,moto,Y),
-    count(T,carro,Z).
+    count(T,"Bicicleta",X),
+    count(T,"Moto",Y),
+    count(T,"Carro",Z).
 
 % Predicado que filtra as entregas guardando os meios de transporte utilizados em cada uma 
 % delas.
@@ -45,16 +50,12 @@ count([X1|T],X,Z):- X1\=X,count(T,X,Z).
 % intervalo de tempo;
 %================================
 
-query8(_,[],[]).
-query8(Initial_Time/Final_Time,[Entrega|Entregas],[Entrega|T]):-
-    query8(Initial_Time/Final_Time,Entregas,Y),
+query8(Initial_Time/Final_Time,Entrega):-
     get_time(Entrega,X),
     X >= Initial_Time,
-    X =< Final_Time,
-    T = Y.
-query8(Initial_Time/Final_Time,[Entrega|Entregas],R):-
-    query8(Initial_Time/Final_Time,Entregas,Y),
-    R = Y.
+    X =< Final_Time.
+query81(Initial_Time/Final_Time,R):-
+    findall(Entrega,query8(Initial_Time/Final_Time,Entrega),R).
 
 %================================
 % Query 9 - calcular o número de encomendas entregues e não entregues pela Green
