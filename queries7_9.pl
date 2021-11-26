@@ -33,11 +33,11 @@ filter_transports([Entrega|Entregas],R):-
 
 % Getter simples para obter o meio de transporte utilizado numa entrega.
 
-get_transport(entrega(_,_,_,_,_,X),X).
+get_transport(entrega(_,_,_,_,X),X).
 
 % Getter simples para obter a data na qual uma entrega foi feita.
 
-get_time(entrega(_,_,_,_,X,_),X).
+get_time(entrega(_,_,_,X,_),X).
 
 % Predicado que conta quantas vezes um elemento X ocorre numa lista.
 
