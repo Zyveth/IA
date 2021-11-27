@@ -13,11 +13,11 @@
 % num determinado intervalo de tempo.
 %================================
 
-query7(Initial_Time/Final_Time,"Bicicleta"/X,"Moto"/Y,"Carro"/Z):-
-    query81(Initial_Time/Final_Time,Time),
+query7(Initial_Time,Final_Time,"Bicicleta"/X,"Mota"/Y,"Carro"/Z):-
+    get_all_filter_time(Initial_Time,Final_Time,Time),
     filter_transports(Time,T),
     count(T,"Bicicleta",X),
-    count(T,"Moto",Y),
+    count(T,"Mota",Y),
     count(T,"Carro",Z).
 
 % Predicado que filtra as entregas guardando os meios de transporte utilizados em cada uma 
@@ -33,11 +33,30 @@ filter_transports([Entrega|Entregas],R):-
 
 % Getter simples para obter o meio de transporte utilizado numa entrega.
 
-get_transport(entrega(_,_,_,_,X),X).
+get_transport(entrega(_,_,_,_,T),T).
 
 % Getter simples para obter a data na qual uma entrega foi feita.
 
-get_time(entrega(_,_,_,X,_),X).
+get_time(X,E):-
+    entrega(A,B,C,X,D),
+    E = entrega(A,B,C,X,D).
+
+% Predicado que verifica se uma entrega foi feita no intervalo de tempo
+% indicado.
+
+filter_time(Initial_Time,Final_Time,Entrega):-
+    get_time(X,Entrega),
+    parse_time(Initial_Time,I),
+    parse_time(Final_Time,F),
+    parse_time(X,Y),
+    Y >= I,
+    Y =< F.
+
+% Predicado que recolhe em R todas as entregas feitas durante o intervalo
+% de tempo indicado.
+
+get_all_filter_time(Initial_Time,Final_Time,R):-
+    findall(Entrega,filter_time(Initial_Time,Final_Time,Entrega),R).
 
 % Predicado que conta quantas vezes um elemento X ocorre numa lista.
 
@@ -50,12 +69,9 @@ count([X1|T],X,Z):- X1\=X,count(T,X,Z).
 % intervalo de tempo;
 %================================
 
-query8(Initial_Time/Final_Time,Entrega):-
-    get_time(Entrega,X),
-    X >= Initial_Time,
-    X =< Final_Time.
-query81(Initial_Time/Final_Time,R):-
-    findall(Entrega,query8(Initial_Time/Final_Time,Entrega),R).
+query8(Initial_Time,Final_Time,R):-
+    get_all_filter_time(Initial_Time,Final_Time,X),
+    length(X,R).
 
 %================================
 % Query 9 - calcular o número de encomendas entregues e não entregues pela Green
