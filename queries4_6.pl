@@ -12,8 +12,8 @@
 % Query 4 - identificar os clientes servidos por um determinado estafeta;
 %================================
 
-Entrega(idEstafeta, _, idEncomenda, _, _);
-Encomenda(idEncomenda, idCliente, _, _, _, _, _, _);    findall disto
+clientesServidosEstafeta(Estafeta,Clientes) :-
+    findall(IdCliente,(entrega(Estafeta, _, IdEncomenda, _, _),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _)),Clientes).
 
 %================================
 % Query 5 - identificar quais as zonas (e.g., rua ou freguesia) com maior volume de entregas por parte da Green Distribution;
