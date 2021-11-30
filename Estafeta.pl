@@ -1,5 +1,5 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Inteligência Artificial - MiEI/3
+% Inteligência Artificial - LEI/3
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Trabalho Prático. 
