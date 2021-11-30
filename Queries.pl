@@ -37,12 +37,12 @@ estafetasParaCliente(Cliente, Estafetas):-findall()
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 3 - Identificar os Clientes servidos por um determinado Estafeta.
 
+clientesServidosEstafeta(Estafeta,Clientes) :-
+    findall(IdCliente,(entrega(Estafeta, _, IdEncomenda, _, _),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _)),Clientes).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 4 - Calcular o Valor Faturado pela Green Distribution num determinado dia.
 
-clientesServidosEstafeta(Estafeta,Clientes) :-
-    findall(IdCliente,(entrega(Estafeta, _, IdEncomenda, _, _),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _)),Clientes).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 5 - Identificar quais as zonas (e.g., rua ou freguesia) com maior Volume de Entregas por parte da Green Distribution.
@@ -107,8 +107,7 @@ query7(Initial_Time,Final_Time,"Bicicleta"/X,"Mota"/Y,"Carro"/Z):-
     count(T,"Mota",Y),
     count(T,"Carro",Z).
 
-% Predicado que filtra as entregas guardando os meios de transporte utilizados em cada uma 
-% delas.
+% Predicado que filtra as Entregas guardando os Meios de Transporte Utilizados em cada uma delas.
 
 filter_transports([Entrega],R):-
     get_transport(Entrega,X),
@@ -118,7 +117,7 @@ filter_transports([Entrega|Entregas],R):-
     filter_transports(Entregas,Y),
     R = [X|Y].
 
-% Getter simples para obter o meio de transporte utilizado numa entrega.
+% Getter Simples para obter o Meio de Transporte utilizado numa Entrega.
 
 get_transport(entrega(_,_,_,_,T),T).
 
@@ -128,8 +127,7 @@ get_time(X,E):-
     entrega(A,B,C,X,D),
     E = entrega(A,B,C,X,D).
 
-% Predicado que verifica se uma entrega foi feita no intervalo de tempo
-% indicado.
+% Predicado que verifica se uma Entrega foi feita no Intervalo de Tempo indicado.
 
 filter_time(Initial_Time,Final_Time,Entrega):-
     get_time(X,Entrega),
@@ -139,8 +137,7 @@ filter_time(Initial_Time,Final_Time,Entrega):-
     Y >= I,
     Y <= F.
 
-% Predicado que recolhe em R todas as entregas feitas durante o intervalo
-% de tempo indicado.
+% Predicado que recolhe em R todas as Entregas feitas durante o Intervalo de Tempo indicado.
 
 get_all_filter_time(Initial_Time,Final_Time,R):-
     findall(Entrega,filter_time(Initial_Time,Final_Time,Entrega),R).
@@ -165,3 +162,5 @@ query8(Initial_Time,Final_Time,R):-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 10 - Calcular o Peso Total transportado por Estafeta num determinado dia.
 
+entregasEstafetaDia(Estafeta,A-M-D,Encomendas) :-
+    findall(IDencomenda,entrega(Estafeta, _,IDencomenda, A-M-D, _),Encomendas).
