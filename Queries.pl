@@ -32,7 +32,11 @@ getBicicletas(Estafetas) :- findall(IdEstafeta,(entrega(IdEstafeta, _, _, _, "Bi
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 2 - Identificar que Estafetas entregaram determinadas encomendas a um determinado Cliente.
 
-estafetasParaCliente(Cliente, Estafetas):-findall()
+estafetasParaCliente(IdEncomenda, IdEstafeta) :- 
+    entrega(IdEstafeta, _, IdEncomenda, _, _).
+
+estafetasParaCliente2(Cliente, Estafetas) :-
+    findall(Estafeta,(entrega(Estafeta, _, IdEncomenda, _, _),encomenda(IdEncomenda, Cliente, _, _, _, _, _, _)),Estafetas).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 3 - Identificar os Clientes servidos por um determinado Estafeta.
@@ -55,25 +59,25 @@ freguesiasTodasEntregas(Freguesias) :-
 
 ruaMaisEntregas(RuaMaisEntregas) :-
     ruasTodasEntregas(Ruas),
-    sort(Ruas, Uniq),                
+    sort(Ruas, Uniq),
     findall([Freq, X], (
-        member(X, Uniq),              
-        include(=(X), Ruas, XX),      
-        length(XX, Freq)              
+        member(X, Uniq),
+        include(=(X), Ruas, XX),
+        length(XX, Freq)
     ), Freqs),
-    sort(Freqs, SFreqs),              
+    sort(Freqs, SFreqs),
     last(SFreqs, [Freq, RuaMaisEntregas]).
 
 freguesiaMaisEntregas(FreguesiaMaisEntregas) :-
     freguesiasTodasEntregas(Freguesias),
-    sort(Freguesias, Uniq),                
+    sort(Freguesias, Uniq),
     findall([Freq, X], (
-        member(X, Uniq),              
-        include(=(X), Freguesias, XX),      
-        length(XX, Freq)              
+        member(X, Uniq),
+        include(=(X), Freguesias, XX),
+        length(XX, Freq)
     ), Freqs),
-    sort(Freqs, SFreqs),              
-    last(SFreqs, [Freq, FreguesiaMaisEntregas]). 
+    sort(Freqs, SFreqs),
+    last(SFreqs, [Freq, FreguesiaMaisEntregas]).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 6 - Calcular a Classificação Média de Satisfação de Cliente para um determinado Estafeta.
