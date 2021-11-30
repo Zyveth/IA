@@ -23,7 +23,29 @@ ruasTodasEntregas(Ruas) :-
     findall(Morada,(cliente(IdCliente, Morada, _),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _),entrega(_, _, IdEncomenda, _, _)),Ruas).
 
 freguesiasTodasEntregas(Freguesias) :-
-    findall(Feguesia,(cliente(IdCliente, _, Freguesia),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _),entrega(_, _, IdEncomenda, _, _)),Freguesias).                      somar isto e devolver a maior morada e maior freguesia
+    findall(Freguesia,(cliente(IdCliente, _, Freguesia),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _),entrega(_, _, IdEncomenda, _, _)),Freguesias).
+
+ruaMaisEntregas(RuaMaisEntregas) :-
+    ruasTodasEntregas(Ruas),
+    sort(Ruas, Uniq),                
+    findall([Freq, X], (
+        member(X, Uniq),              
+        include(=(X), Ruas, XX),      
+        length(XX, Freq)              
+    ), Freqs),
+    sort(Freqs, SFreqs),              
+    last(SFreqs, [Freq, RuaMaisEntregas]).
+
+freguesiaMaisEntregas(FreguesiaMaisEntregas) :-
+    freguesiasTodasEntregas(Freguesias),
+    sort(Freguesias, Uniq),                
+    findall([Freq, X], (
+        member(X, Uniq),              
+        include(=(X), Freguesias, XX),      
+        length(XX, Freq)              
+    ), Freqs),
+    sort(Freqs, SFreqs),              
+    last(SFreqs, [Freq, FreguesiaMaisEntregas]).               
 
 %================================
 % Query 6 - calcular a classificação media de satisfação de cliente para um determinado estafeta; 
