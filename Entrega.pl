@@ -28,3 +28,6 @@ entrega(es9, 3, enc39, "2021-11-05", "Mota").
 entrega(es9, 4, enc49, "2021-11-07", "Bicicleta").
 entrega(es10, 5, enc40, "2021-11-09", "Mota").
 entrega(es10, 5, enc50, "2021-11-05", "Carro").
+entrega(es1, 5, enc111, 2021-11-07, "Carro").
+entrega(es1, 5, enc112, 2021-11-07, "Carro").
+entrega(es1, 5, enc113, 2021-11-07, "Carro").

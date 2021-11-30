@@ -70,4 +70,9 @@ classificacaoMediaEstafeta(Estafeta,Media) :-
     classificacoesEstafeta(Estafeta,Classificacoes),
     mediaLista(Classificacoes,Media).
 
+%================================
+% Query 10 - calcular o peso total transportado por estafeta num determinado dia; 
+%================================
 
+entregasEstafetaDia(Estafeta,A-M-D,Encomendas) :-
+    findall(IDencomenda,entrega(Estafeta, _,IDencomenda, A-M-D, _),Encomendas).
