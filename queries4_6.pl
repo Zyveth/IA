@@ -74,5 +74,6 @@ classificacaoMediaEstafeta(Estafeta,Media) :-
 % Query 10 - calcular o peso total transportado por estafeta num determinado dia; 
 %================================
 
-entregasEstafetaDia(Estafeta,A-M-D,Encomendas) :-
-    findall(IDencomenda,entrega(Estafeta, _,IDencomenda, A-M-D, _),Encomendas).
+totalPesoEstafetaDia(Estafeta,D-M-A,TotalPesos) :-
+    findall(Peso,(entrega(Estafeta, _,IDencomenda, D-M-A, _),encomenda(IDencomenda,_,Peso,_,_,_,_,_)),ListaPesos),
+    sum_list(ListaPesos,TotalPesos).
