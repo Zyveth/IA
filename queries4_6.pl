@@ -81,7 +81,7 @@ totalPesoEstafetaDia(Estafeta,D-M-A,TotalPesos) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 4 - Calcular o Valor Faturado pela Green Distribution num determinado dia.
 
-valorFaturadoDia(Data,Valores) :-
+valorFaturadoDia(Data,TotalFaturado) :-
     findall(ValorFinal,
             ((entrega(_,_,IdEncomenda,Data,MeioDeTransporte),encomenda(IdEncomenda,_,_,_,_,Preco,_,DataPrevistaDeEntrega)),
             parse_time(DataPrevistaDeEntrega,I),
@@ -92,5 +92,5 @@ valorFaturadoDia(Data,Valores) :-
             ((MeioDeTransporte="Bicicleta"),F=<I, ValorFinal is Preco*0.85);
             ((MeioDeTransporte="Carro"),F=<I, ValorFinal is Preco*1);
             ((MeioDeTransporte="Mota"),F=<I, ValorFinal is Preco*1.1)))
-            ,Valores).
-    %sum_list(Valores,TotalFaturado).
+            ,Valores),
+    sum_list(Valores,TotalFaturado).
