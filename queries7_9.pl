@@ -56,7 +56,7 @@ filter_time_entrega(Initial_Time,Final_Time,Entrega):-
 % de tempo indicado.
 
 get_all_filter_time_entrega(Initial_Time,Final_Time,R):-
-    findall(Entrega,filter_time_en\(Initial_Time,Final_Time,Entrega),R).
+    findall(Entrega,filter_time_entrega(Initial_Time,Final_Time,Entrega),R).
 
 % Predicado que conta quantas vezes um elemento X ocorre numa lista.
 
@@ -85,16 +85,19 @@ query9(Initial_Time,Final_Time,"Efetuada"/X,"A ser Entregue"/Y,"Entregue"/Z):-
     count(T,"A ser Entregue",Y),
     count(T,"Entregue",Z).
 
-get_all_filter_time_encomenda(Initial_Time,Final_Time,Time):-
+get_all_filter_time_encomenda(Initial_Time,Final_Time,R):-
     findall(Encomenda,filter_time_encomenda(Initial_Time,Final_Time,Encomenda),R).
 
 filter_time_encomenda(Initial_Time,Final_Time,Encomenda):-
-    encomenda(A,B,C,D,E,F,X,G),
+    get_time_encomenda(X,Encomenda),
     parse_time(Initial_Time,I),
     parse_time(Final_Time,F),
     parse_time(X,Y),
     Y >= I,
-    Y =< F,
+    Y =< F.
+
+get_time_encomenda(X,Encomenda):-
+    encomenda(A,B,C,D,E,F,X,G),
     Encomenda = encomenda(A,B,C,D,E,F,X,G).
 
 filter_status([Encomenda],R):-
