@@ -14,7 +14,7 @@
 %================================
 
 query7(Initial_Time,Final_Time,"Bicicleta"/X,"Mota"/Y,"Carro"/Z):-
-    get_all_filter_time(Initial_Time,Final_Time,Time),
+    get_all_filter_time_entrega(Initial_Time,Final_Time,Time),
     filter_transports(Time,T),
     count(T,"Bicicleta",X),
     count(T,"Mota",Y),
@@ -44,7 +44,7 @@ get_time(X,E):-
 % Predicado que verifica se uma entrega foi feita no intervalo de tempo
 % indicado.
 
-filter_time(Initial_Time,Final_Time,Entrega):-
+filter_time_entrega(Initial_Time,Final_Time,Entrega):-
     get_time(X,Entrega),
     parse_time(Initial_Time,I),
     parse_time(Final_Time,F),
@@ -55,8 +55,8 @@ filter_time(Initial_Time,Final_Time,Entrega):-
 % Predicado que recolhe em R todas as entregas feitas durante o intervalo
 % de tempo indicado.
 
-get_all_filter_time(Initial_Time,Final_Time,R):-
-    findall(Entrega,filter_time(Initial_Time,Final_Time,Entrega),R).
+get_all_filter_time_entrega(Initial_Time,Final_Time,R):-
+    findall(Entrega,filter_time_en\(Initial_Time,Final_Time,Entrega),R).
 
 % Predicado que conta quantas vezes um elemento X ocorre numa lista.
 
@@ -70,10 +70,39 @@ count([X1|T],X,Z):- X1\=X,count(T,X,Z).
 %================================
 
 query8(Initial_Time,Final_Time,R):-
-    get_all_filter_time(Initial_Time,Final_Time,X),
+    get_all_filter_time_entrega(Initial_Time,Final_Time,X),
     length(X,R).
 
 %================================
 % Query 9 - calcular o número de encomendas entregues e não entregues pela Green
 % Distribution, num determinado período de tempo;
 %================================
+
+query9(Initial_Time,Final_Time,"Efetuada"/X,"A ser Entregue"/Y,"Entregue"/Z):-
+    get_all_filter_time_encomenda(Initial_Time,Final_Time,Time),
+    filter_status(Time,T),
+    count(T,"Efetuada",X),
+    count(T,"A ser Entregue",Y),
+    count(T,"Entregue",Z).
+
+get_all_filter_time_encomenda(Initial_Time,Final_Time,Time):-
+    findall(Encomenda,filter_time_encomenda(Initial_Time,Final_Time,Encomenda),R).
+
+filter_time_encomenda(Initial_Time,Final_Time,Encomenda):-
+    encomenda(A,B,C,D,E,F,X,G),
+    parse_time(Initial_Time,I),
+    parse_time(Final_Time,F),
+    parse_time(X,Y),
+    Y >= I,
+    Y =< F,
+    Encomenda = encomenda(A,B,C,D,E,F,X,G).
+
+filter_status([Encomenda],R):-
+    get_status(Encomenda,X),
+    R = [X].
+filter_status([Encomenda|Encomendas],R):-
+    get_status(Encomenda,X),
+    filter_status(Encomendas,Y),
+    R = [X|Y].
+
+get_status(encomenda(_,_,_,_,S,_,_,_),S).
