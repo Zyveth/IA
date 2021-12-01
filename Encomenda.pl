@@ -58,3 +58,7 @@ encomenda(enc47, c7, 16, 6, "Entregue", 75, "2021-11-09", "2021-11-16").
 encomenda(enc48, c8, 18, 15, "Entregue", 20, "2021-11-09", "2021-11-14").
 encomenda(enc49, c9, 5, 23, "Entregue", 13, "2021-11-10", "2021-11-15").
 encomenda(enc50, c10, 20, 39, "Entregue", 100, "2021-11-10", "2021-11-17").
+
+encomenda(enc111, c10, 1, 10, "Entregue", 23, "2021-11-01", "2021-11-07").
+encomenda(enc112, c10, 2, 10, "Entregue", 23, "2021-11-01", "2021-11-07").
+encomenda(enc113, c10, 3, 10, "Entregue", 23, "2021-11-01", "2021-11-07").

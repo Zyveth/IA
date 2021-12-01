@@ -173,6 +173,6 @@ query8(Initial_Time,Final_Time,R):-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 10 - Calcular o Peso Total transportado por Estafeta num determinado dia.
 
-totalPesoEstafetaDia(Estafeta,D-M-A,TotalPesos) :-
-    findall(Peso,(entrega(Estafeta, _,IDencomenda, D-M-A, _),encomenda(IDencomenda,_,Peso,_,_,_,_,_)),ListaPesos),
+totalPesoEstafetaDia(Estafeta,Data,TotalPesos) :-
+    findall(Peso,(entrega(Estafeta, _,IDencomenda, Data, _),encomenda(IDencomenda,_,Peso,_,_,_,_,_)),ListaPesos),
     sum_list(ListaPesos,TotalPesos).
