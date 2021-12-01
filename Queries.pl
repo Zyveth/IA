@@ -21,13 +21,20 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 1 - Identificar o Estafeta que utilizou mais vezes um Meio de Transporte mais Ecológico.
 
-estafetaMaisEcologico(Entregas,Estafeta):-accMax(Estafetas,Estafeta,Max), getBicicletas([Estafeta|Estafetas]).
+estafetaMaisEcologico(Estafeta) :-
+    getBicicletas(Estafetas),
+    sort(Estafetas, Uniq),                
+    findall([Freq, X], (
+        member(X, Uniq),              
+        include(=(X), Ruas, XX),      
+        length(XX, Freq)              
+    ), Freqs),
+    sort(Freqs, SFreqs),              
+    last(SFreqs, [Freq, Estafeta]). 
 
-accMax([H|T],A,Max):- H > A, accMax(T,H,Max).
-accMax([H|T],A,Max):- H <= A, accMax(T,A,Max).
-accMax([],A,A).
+getBicicletas(Estafetas) :- 
+    findall(IdEstafeta,(entrega(IdEstafeta, _, _, _, "Bicicleta"),Estafetas)).
 
-getBicicletas(Estafetas) :- findall(IdEstafeta,(entrega(IdEstafeta, _, _, _, "Bicicleta"),Estafetas)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 2 - Identificar que Estafetas entregaram determinadas encomendas a um determinado Cliente.
