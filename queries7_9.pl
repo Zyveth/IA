@@ -37,7 +37,7 @@ get_transport(entrega(_,_,_,_,T),T).
 
 % Getter simples para obter a data na qual uma entrega foi feita.
 
-get_time(X,E):-
+get_time_entrega(X,E):-
     entrega(A,B,C,X,D),
     E = entrega(A,B,C,X,D).
 
@@ -45,7 +45,7 @@ get_time(X,E):-
 % indicado.
 
 filter_time_entrega(Initial_Time,Final_Time,Entrega):-
-    get_time(X,Entrega),
+    get_time_entrega(X,Entrega),
     parse_time(Initial_Time,I),
     parse_time(Final_Time,F),
     parse_time(X,Y),
@@ -85,8 +85,14 @@ query9(Initial_Time,Final_Time,"Efetuada"/X,"A ser Entregue"/Y,"Entregue"/Z):-
     count(T,"A ser Entregue",Y),
     count(T,"Entregue",Z).
 
+% Predicado que recolhe em R todas as encomendas pedidas durante o intervalo
+% de tempo indicado.
+
 get_all_filter_time_encomenda(Initial_Time,Final_Time,R):-
     findall(Encomenda,filter_time_encomenda(Initial_Time,Final_Time,Encomenda),R).
+
+% Predicado que verifica se uma encomenda foi pedida no intervalo de tempo
+% indicado.
 
 filter_time_encomenda(Initial_Time,Final_Time,Encomenda):-
     get_time_encomenda(X,Encomenda),
@@ -96,9 +102,14 @@ filter_time_encomenda(Initial_Time,Final_Time,Encomenda):-
     Y >= I,
     Y =< F.
 
+% Getter simples para obter a data na qual uma encomenda foi pedida.
+
 get_time_encomenda(X,Encomenda):-
     encomenda(A,B,C,D,E,F,X,G),
     Encomenda = encomenda(A,B,C,D,E,F,X,G).
+
+% Predicado que filtra as encomendas guardando o status de cada uma 
+% delas.
 
 filter_status([Encomenda],R):-
     get_status(Encomenda,X),
@@ -107,5 +118,7 @@ filter_status([Encomenda|Encomendas],R):-
     get_status(Encomenda,X),
     filter_status(Encomendas,Y),
     R = [X|Y].
+
+% Getter simples para obter o status duma encomenda.
 
 get_status(encomenda(_,_,_,_,S,_,_,_),S).
