@@ -30,11 +30,10 @@ estafetaMaisEcologico(Estafeta) :-
         length(XX, Freq)              
     ), Freqs),
     sort(Freqs, SFreqs),              
-    last(SFreqs, [Freq, Estafeta]). 
+    last(SFreqs, [Freq, Estafeta]).
 
 getBicicletas(Estafetas) :- 
     findall(IdEstafeta,(entrega(IdEstafeta, _, _, _, "Bicicleta"),Estafetas)).
-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 2 - Identificar que Estafetas entregaram determinadas encomendas a um determinado Cliente.
@@ -54,6 +53,19 @@ clientesServidosEstafeta(Estafeta,Clientes) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 4 - Calcular o Valor Faturado pela Green Distribution num determinado dia.
 
+valorFaturadoDia(Data,Valores) :-
+    findall(ValorFinal,
+            ((entrega(_,_,IdEncomenda,Data,MeioDeTransporte),encomenda(IdEncomenda,_,_,_,_,Preco,_,DataPrevistaDeEntrega)),
+            parse_time(DataPrevistaDeEntrega,I),
+            parse_time(Data,F),
+            (((MeioDeTransporte="Bicicleta"),F>I, ValorFinal is Preco*0.85*0.75);
+            ((MeioDeTransporte="Carro"),F>I, ValorFinal is Preco*1*0.75);
+            ((MeioDeTransporte="Mota"),F>I, ValorFinal is Preco*1.1*0.75);
+            ((MeioDeTransporte="Bicicleta"),F=<I, ValorFinal is Preco*0.85);
+            ((MeioDeTransporte="Carro"),F=<I, ValorFinal is Preco*1);
+            ((MeioDeTransporte="Mota"),F=<I, ValorFinal is Preco*1.1)))
+            ,Valores).
+    %sum_list(Valores,TotalFaturado).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 5 - Identificar quais as zonas (e.g., rua ou freguesia) com maior Volume de Entregas por parte da Green Distribution.
@@ -146,7 +158,7 @@ filter_time(Initial_Time,Final_Time,Entrega):-
     parse_time(Final_Time,F),
     parse_time(X,Y),
     Y >= I,
-    Y <= F.
+    Y =< F.
 
 % Predicado que recolhe em R todas as Entregas feitas durante o Intervalo de Tempo indicado.
 
@@ -169,6 +181,50 @@ query8(Initial_Time,Final_Time,R):-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 9 - Calcular o Número de Encomendas Entregues e não Entregues pela Green Distribution, num determinado Período de Tempo.
 
+query9(Initial_Time,Final_Time,"Efetuada"/X,"A ser Entregue"/Y,"Entregue"/Z):-
+    get_all_filter_time_encomenda(Initial_Time,Final_Time,Time),
+    filter_status(Time,T),
+    count(T,"Efetuada",X),
+    count(T,"A ser Entregue",Y),
+    count(T,"Entregue",Z).
+
+% Predicado que recolhe em R todas as encomendas pedidas durante o intervalo
+% de tempo indicado.
+
+get_all_filter_time_encomenda(Initial_Time,Final_Time,R):-
+    findall(Encomenda,filter_time_encomenda(Initial_Time,Final_Time,Encomenda),R).
+
+% Predicado que verifica se uma encomenda foi pedida no intervalo de tempo
+% indicado.
+
+filter_time_encomenda(Initial_Time,Final_Time,Encomenda):-
+    get_time_encomenda(X,Encomenda),
+    parse_time(Initial_Time,I),
+    parse_time(Final_Time,F),
+    parse_time(X,Y),
+    Y >= I,
+    Y =< F.
+
+% Getter simples para obter a data na qual uma encomenda foi pedida.
+
+get_time_encomenda(X,Encomenda):-
+    encomenda(A,B,C,D,E,F,X,G),
+    Encomenda = encomenda(A,B,C,D,E,F,X,G).
+
+% Predicado que filtra as encomendas guardando o status de cada uma 
+% delas.
+
+filter_status([Encomenda],R):-
+    get_status(Encomenda,X),
+    R = [X].
+filter_status([Encomenda|Encomendas],R):-
+    get_status(Encomenda,X),
+    filter_status(Encomendas,Y),
+    R = [X|Y].
+
+% Getter simples para obter o status duma encomenda.
+
+get_status(encomenda(_,_,_,_,S,_,_,_),S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Query 10 - Calcular o Peso Total transportado por Estafeta num determinado dia.
