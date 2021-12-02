@@ -78,15 +78,14 @@ query8(Initial_Time,Final_Time,R):-
 % Distribution, num determinado período de tempo;
 %================================
 
-query9(Initial_Time,Final_Time,"Efetuada"/X,"A ser Entregue"/Y,"Entregue"/Z):-
+query9(Initial_Time,Final_Time,"Não Entregue"/X,"Entregue"/Z):-
     get_all_filter_time_encomenda(Initial_Time,Final_Time,Time),
     filter_status(Time,T),
     count(T,"Entregue",A),
-    count(T,"Efetuada",X),
-    count(T,"A ser Entregue",E),
     query7(Initial_Time,Final_Time,"Bicicleta"/B,"Mota"/C,"Carro"/D),
     Z is B+C+D,
-    Y is E+(A-Z).
+    length(T,L),
+    X is L-Z.
     
 
 % Predicado que recolhe em R todas as encomendas pedidas durante o intervalo
