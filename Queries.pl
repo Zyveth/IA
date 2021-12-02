@@ -197,7 +197,7 @@ query9(Initial_Time,Final_Time,X,Z):-
     query7(Initial_Time,Final_Time,B,C,D),
     Z is B + C + D,
     length(T,L),
-    X is L - Z.
+    X is L - A.
     
 % Função auxiliar da função 'query9' que recolhe em R todas as Encomendas pedidas durante o Intervalo de Tempo indicado.
 get_all_filter_time_encomenda(Initial_Time,Final_Time,R):-
