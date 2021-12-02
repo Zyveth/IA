@@ -50,7 +50,7 @@ run_query(4) :- write('Indique qual a Dia que pretende analisar, no formato "YYY
 % Função que faz com que os Inputs e os Outputs da 'query5' ocorram, quando chamados pela função 'main'.
 run_query(5) :- query5_1(MoradaMaisEntregas), query5_2(FreguesiaMaisEntregas),
 	write('A Freguesia com maior volume de Entregas e a : '),  write(FreguesiaMaisEntregas), writeln('.'),
-	write('A Morada com maior volume de Entregas e a : '), write(RuaMaisEntregas), writeln('.').
+	write('A Morada com maior volume de Entregas e a : '), write(MoradaMaisEntregas), writeln('.').
 
 % Função que faz com que os Inputs e os Outputs da 'query6' ocorram, quando chamados pela função 'main'.
 run_query(6) :- write('Indique qual o Estafeta que pretende analisar : '), read(Estafeta),
@@ -64,8 +64,7 @@ run_query(7) :- write('Indique qual a Data Inicial que pretende analisar, no for
 	write(X), write(', por Mota foi : '), write(Y), write(' e por Carro foi : '), write(Z), writeln('.').
 
 % Função que faz com que os Inputs e os Outputs da 'query8' ocorram, quando chamados pela função 'main'.
-run_query(8) :- write('Indique qual o Estafeta que pretende analisar : '), read(Estafeta),
-	write('Indique qual a Data Inicial que pretende analisar, no formato "YYYY-MM-DD" : '), read(Initial_Time),
+run_query(8) :- write('Indique qual a Data Inicial que pretende analisar, no formato "YYYY-MM-DD" : '), read(Initial_Time),
 	write('Indique qual a Data Final que pretende analisar, no formato "YYYY-MM-DD" : '), read(Final_Time),
 	query8(Initial_Time,Final_Time,R), write('O Numero Total de Entregas realizadas entre as Datas escolhidas foram : '),  write(R), writeln('.').
 

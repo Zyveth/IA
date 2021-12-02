@@ -88,11 +88,11 @@ query5_1(MoradaMaisEntregas) :-
     sort(Moradas, Uniq),
     findall([Freq, X], (
         member(X, Uniq),
-        include(=(X), Moradas, XX),
+        include( =(X), Moradas, XX),
         length(XX, Freq)
     ), Freqs),
     sort(Freqs, SFreqs),
-    last(SFreqs, [Freq, RuaMaisEntregas]).
+    last(SFreqs, [Freq, MoradaMaisEntregas]).
 
 % Função que devolve a Freguesia com maior Volume de Entregas.
 query5_2(FreguesiaMaisEntregas) :-
@@ -100,13 +100,13 @@ query5_2(FreguesiaMaisEntregas) :-
     sort(Freguesias, Uniq),
     findall([Freq, X], (
         member(X, Uniq),
-        include(=(X), Freguesias, XX),
+        include( =(X), Freguesias, XX),
         length(XX, Freq)
     ), Freqs),
     sort(Freqs, SFreqs),
     last(SFreqs, [Freq, FreguesiaMaisEntregas]).
 
-% Função auxiliar da função 'query5_1' que devolve todas as Morada onde ocorre pelo menos uma Entregas de uma Encomenda.
+% Função auxiliar da função 'query5_1' que devolve todas as Moradas onde ocorre pelo menos uma Entregas de uma Encomenda.
 moradasTodasEntregas(Moradas) :-
     findall(Morada,(cliente(IdCliente, Morada, _),encomenda(IdEncomenda, IdCliente, _, _, _, _, _, _),entrega(_, _, IdEncomenda, _, _)),Moradas).
 
