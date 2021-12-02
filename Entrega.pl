@@ -6,7 +6,7 @@
 % Base de Conhecimento de Entregas.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Entrega(idEstafeta, Classificacao, idEncomenda, DataDeEntregaEfetiva, MeioDeTransporte);
+% Entrega(idEstafeta, Classificacao, idEncomenda, "DataDeEntregaEfetiva", "MeioDeTransporte");
 
 entrega(es1, 5, enc31, "2021-11-07", "Carro").
 entrega(es1, 4, enc41, "2021-11-13", "Carro").
@@ -31,3 +31,4 @@ entrega(es10, 5, enc50, "2021-11-15", "Carro").
 entrega(es1, 5, enc111, "2021-11-07", "Carro").
 entrega(es1, 5, enc112, "2021-11-07", "Carro").
 entrega(es1, 5, enc113, "2021-11-07", "Carro").
+entrega(es4, 5, enc114, "2021-12-07", "Bicicleta").

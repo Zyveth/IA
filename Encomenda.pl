@@ -6,7 +6,7 @@
 % Base de Conhecimento de Encomendas.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Encomenda(idEncomenda, "Morada"idCliente, Peso, Volume, Estado, Preço, DataDePedido, DataPrevistaDeEntrega);
+% Encomenda(idEncomenda, idCliente, Peso, Volume, Estado, Preço, "DataDePedido", "DataPrevistaDeEntrega");
 
 encomenda(enc1, c1, 2, 5, "Efetuada", 5, "2021-11-14", "2021-11-18").
 encomenda(enc2, c2, 10, 20, "Efetuada", 10, "2021-11-15", "2021-11-19").
@@ -58,7 +58,7 @@ encomenda(enc47, c7, 16, 6, "Entregue", 75, "2021-11-09", "2021-11-16").
 encomenda(enc48, c8, 18, 15, "Entregue", 20, "2021-11-09", "2021-11-14").
 encomenda(enc49, c9, 5, 23, "Entregue", 13, "2021-11-10", "2021-11-15").
 encomenda(enc50, c10, 20, 39, "Entregue", 100, "2021-11-10", "2021-11-17").
-
 encomenda(enc111, c10, 1, 10, "Entregue", 23, "2021-11-01", "2021-11-07").
 encomenda(enc112, c10, 2, 10, "Entregue", 23, "2021-11-01", "2021-11-07").
 encomenda(enc113, c10, 3, 10, "Entregue", 23, "2021-11-01", "2021-11-07").
+encomenda(enc114, c7, 4, 12, "Entregue", 25, "2021-12-01", "2021-14-07").
