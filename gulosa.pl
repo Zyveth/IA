@@ -15,7 +15,7 @@
 
 resolveGulosa(Caminho/Custo) :-
     inicio(Nodo),
-    aresta(Nodo, _, _,Est),
+    aresta(Nodo, _, _, Est),
     agulosa([[Nodo]/0/Est], CaminhoInverso/Custo/_),
     inverso(CaminhoInverso, Caminho).
 
