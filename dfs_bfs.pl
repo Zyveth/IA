@@ -1,18 +1,21 @@
 :- include('morada.pl').
 :- include('aresta.pl').
 
+origem(1).
 ligacao(A,B) :- aresta(A,B,_);aresta(B,A,_).
 
 %%%%%%%%%%%%%%%%%%%%%
 %DFS
 %%%%%%%%%%%%%%%%%%%%%
 
-dfs(Origem,Destino,Caminho):-
+dfs(Destino,Caminho):-
+    origem(Origem),
     dfsAux(Origem,Destino,[Origem],Caminho).
 
 %condicao paragem qd vertice atual e destino sao iguais. Basta inverter caminho #TODO isto é só caminho de ida
-dfsAux(Destino,Destino,LA,Caminho):-
-    reverse(LA,Caminho).
+dfsAux(Destino,Destino,[H|T],Caminho):-
+    reverse([H|T],Cam),
+    append(Cam,T,Caminho).
 
 dfsAux(Actual,Destino,LA,Caminho):-
     ligacao(Actual,X), %testar ligacao entre vertice actual e um qualquer X
@@ -23,12 +26,14 @@ dfsAux(Actual,Destino,LA,Caminho):-
 %BFS
 %%%%%%%%%%%%%%%%%%%%%
 
-bfs(Origem,Destino,Caminho):-
+bfs(Destino,Caminho):-
+    origem(Origem),
     bfsAux(Destino,[[Origem]],Caminho).
 
 %condicao paragem: qd destino = vertice à cabeça do caminho actual. Basta inverter caminho
 bfsAux(Destino,[[Destino|T]|_],Caminho):-
-    reverse([Destino|T],Caminho).
+    reverse([Destino|T],Cam),
+    append(Cam,T,Caminho).
 
 bfsAux(Destino,[LA|Outros],Caminho):-
     LA=[Actual|_],
