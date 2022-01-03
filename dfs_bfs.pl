@@ -23,6 +23,25 @@ dfsAux(Actual,Destino,LA,Caminho):-
     dfsAux(X,Destino,[X|LA],Caminho). %chamada recursiva
 
 %%%%%%%%%%%%%%%%%%%%%
+%DFS MAIS Q 1 ENTREGA
+%%%%%%%%%%%%%%%%%%%%%
+
+dfsV(Destinos,Caminho):-
+    origem(Origem),
+    dfsAux(Origem,Destinos,[Origem],Caminho).
+
+%condicao paragem qd vertice atual e destino sao iguais. Basta inverter caminho #TODO isto é só caminho de ida
+dfsVAux(Destino,[Destino],[H|T],Caminho):-
+    reverse([H|T],Cam),
+    append(Cam,T,Caminho).
+
+dfsVAux(Actual,Dest,LA,Caminho):-
+    ligacao(Actual,X), %testar ligacao entre vertice actual e um qualquer X
+    \+ member(X,LA), %testar nao circularidade p/evitar vertices ja visitados
+    delete(X,Dest,Destinos) % TODO isto esta mal
+    dfsAux(X,Destinos,[X|LA],Caminho). %chamada recursiva
+
+%%%%%%%%%%%%%%%%%%%%%
 %BFS
 %%%%%%%%%%%%%%%%%%%%%
 
