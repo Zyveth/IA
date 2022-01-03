@@ -13,6 +13,8 @@
 
 % Código
 
+inicio(1).
+
 resolveAEstrela(Caminho/Custo) :-
     inicio(Nodo),
     aresta(Nodo, _, _),
