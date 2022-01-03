@@ -13,11 +13,13 @@
 
 % Código
 
+inicio(1).
+fim(23).
+
 resolveGulosa(Caminho/Custo) :-
     inicio(Nodo),
-    aresta(Nodo, _, _, Est),
     agulosa([[Nodo]/0/Est], CaminhoInverso/Custo/_),
-    inverso(CaminhoInverso, Caminho).
+    reverse(CaminhoInverso, Caminho).
 
 agulosa(Caminhos, Caminho) :-
     obtem_melhor_g(Caminhos, Caminho),
@@ -44,9 +46,13 @@ expandeGulosa(Caminho, ExpCaminhos) :-
 	findall(NovoCaminho, adjacenteG(Caminho,NovoCaminho), ExpCaminhos).
 
 adjacenteG([Nodo|Caminho]/Custo/_, [ProxNodo,Nodo|Caminho]/NovoCusto/Est) :-
-    aresta(Nodo, ProxNodo, PassoCusto, Estimativa),
+    aresta(Nodo, ProxNodo, PassoCusto),
     nao(member(ProxNodo, Caminho)),
 	NovoCusto is Custo + PassoCusto,
+    estimativa(ProxNodo,Est).
+
+estimativa(Nodo,Est) :-
+    morada(Nodo,_,Estimativa),
     Est = Estimativa.
 
 seleciona(E, [E|Xs], Xs).

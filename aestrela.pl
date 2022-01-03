@@ -14,12 +14,12 @@
 % Código
 
 inicio(1).
+fim(17).
 
 resolveAEstrela(Caminho/Custo) :-
     inicio(Nodo),
-    aresta(Nodo, _, _),
     aestrela([[Nodo]/0/Capacidade], CaminhoInverso/Custo/_),
-    inverso(CaminhoInverso, Caminho).
+    reverse(CaminhoInverso, Caminho).
 
 aestrela(Caminhos, Caminho) :-
 	obtem_melhor(Caminhos, Caminho),
@@ -49,9 +49,13 @@ seleciona(E, [E|Xs], Xs).
 seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
 
 adjacenteG([Nodo|Caminho]/Custo/_, [ProxNodo,Nodo|Caminho]/NovoCusto/Est) :-
-    aresta(Nodo, ProxNodo, PassoCusto,Estimativa),
+    aresta(Nodo, ProxNodo, PassoCusto),
     nao(member(ProxNodo, Caminho)),
 	NovoCusto is Custo + PassoCusto,
+    estimativa(ProxNodo,Est).
+
+estimativa(Nodo,Est) :-
+    morada(Nodo,_,Estimativa),
     Est = Estimativa.
 
 nao( Questao ) :-
