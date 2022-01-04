@@ -105,6 +105,7 @@ aresta(93,92,21).
 aresta(92,91,11).
 aresta(91,81,24).
 aresta(70,71,12).
+aresta(68,72,33).
 
 %sentido contrario
 aresta(2,1,30).
@@ -213,3 +214,4 @@ aresta(92,93,21).
 aresta(91,92,11).
 aresta(81,91,24).
 aresta(71,70,12).
+aresta(72,68,33).
