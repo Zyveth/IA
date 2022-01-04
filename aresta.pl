@@ -1,4 +1,4 @@
-%aresta(moradaInicio,moradaFinal,distancia,estimativa??)
+%aresta(moradaInicio,moradaFinal,distancia)
 aresta(1,2,30).
 aresta(2,3,21).
 aresta(3,4,15).
@@ -71,7 +71,7 @@ aresta(73,70,22).
 aresta(75,83,17).
 aresta(83,82,25).
 aresta(82,81,17).
-aresta(54,49,18).
+aresta(54,69,18).
 aresta(69,70,8).
 aresta(54,53,13).
 aresta(53,51,4).
@@ -104,6 +104,8 @@ aresta(89,93,20).
 aresta(93,92,21).
 aresta(92,91,11).
 aresta(91,81,24).
+aresta(70,71,12).
+aresta(68,72,33).
 
 %sentido contrario
 aresta(2,1,30).
@@ -144,7 +146,7 @@ aresta(31,32,15).
 aresta(30,31,5).
 aresta(21,30,20).
 aresta(36,31,30).
-aresta(34,36,25).
+aresta(35,36,25).
 aresta(18,35,10).
 aresta(37,36,16).
 aresta(38,37,12).
@@ -178,7 +180,7 @@ aresta(70,73,22).
 aresta(83,75,17).
 aresta(82,83,25).
 aresta(81,82,17).
-aresta(49,54,18).
+aresta(69,54,18).
 aresta(70,69,8).
 aresta(53,54,13).
 aresta(51,53,4).
@@ -211,4 +213,5 @@ aresta(93,89,20).
 aresta(92,93,21).
 aresta(91,92,11).
 aresta(81,91,24).
-
+aresta(71,70,12).
+aresta(72,68,33).
