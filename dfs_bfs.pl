@@ -2,49 +2,60 @@
 :- include('aresta.pl').
 
 origem(1).
-ligacao(A,B) :- aresta(A,B,_);aresta(B,A,_).
+ligacao(A,B,C) :- aresta(A,B,C);aresta(B,A,C).
 
 %%%%%%%%%%%%%%%%%%%%%
 %DFS
 %%%%%%%%%%%%%%%%%%%%%
 
-dfs(Destino,Caminho):-
+dfs(Destino,Custo,Caminho):-
     origem(Origem),
-    dfsAux(Origem,Destino,[Origem],Caminho).
+    dfsAux(Origem,Destino,[Origem],0,Custo,Caminho).
+
+dfs(Origem,Destino,Custo,Caminho):-
+    dfsAux(Origem,Destino,[Origem],0,Custo,Caminho).
 
 %condicao paragem qd vertice atual e destino sao iguais. Basta inverter caminho
-dfsAux(Destino,Destino,[H|T],Caminho):-
+dfsAux(Destino,Destino,[H|T],CI,Custo,Caminho):-
     reverse([H|T],Cam),
-    append(Cam,T,Caminho).
+    append(Cam,T,Caminho),
+    Custo is CI + CI.
 
-dfsAux(Actual,Destino,LA,Caminho):-
-    ligacao(Actual,X), %testar ligacao entre vertice actual e um qualquer X
+
+dfsAux(Actual,Destino,LA,CI,Custo,Caminho):-
+    aresta(Actual,X,C), %testar ligacao entre vertice actual e um qualquer X
     \+ member(X,LA), %testar nao circularidade p/evitar vertices ja visitados
-    dfsAux(X,Destino,[X|LA],Caminho). %chamada recursiva
+    C1 is CI+C,
+    dfsAux(X,Destino,[X|LA],C1,Custo,Caminho). %chamada recursiva
 
 %%%%%%%%%%%%%%%%%%%%%
-%DFS MAIS Q 1 ENTREGA #TODO
+%DFS MAIS Q 1 ENTREGA
 %%%%%%%%%%%%%%%%%%%%%
 
-dfsV(Destinos,Caminho):-
+dfsV(Destinos,Custo,Caminho):-
     origem(Origem),
-    dfsVAux(Origem,Destinos,[Origem],Caminho).
+    dfsVAux(Origem,Destinos,[Origem],0,Custo,Caminho).
 
 % condicao de paragem qd deixa de haver destinos na lista
-dfsVAux(Destino,[],[H|T],Caminho):-
+dfsVAux(Destino,[],[H|T],CI,Custo,Caminho):-
     reverse([H|T],Cam),
-    append(Cam,T,Caminho).
-  
+    append(Cam,T,Caminho),
+    Custo is CI + CI.
+
+
 %condicao paragem qd vertice atual e destino sao iguais. Basta inverter caminho
 dfsVAux(Destino,[Destino],[H|T],Caminho):-
     reverse([H|T],Cam),
-    append(Cam,T,Caminho).
+    append(Cam,T,Caminho),
+    Custo is CI + CI.
 
-dfsVAux(Actual,Dest,LA,Caminho):-
-    ligacao(Actual,X), %testar ligacao entre vertice actual e um qualquer X
+
+dfsVAux(Actual,Dest,LA,CI,Custo,Caminho):-
+    aresta(Actual,X,C), %testar ligacao entre vertice actual e um qualquer X
     \+ member(X,LA), %testar nao circularidade p/evitar vertices ja visitados
     delete(Dest, X, Destinos),
-    dfsVAux(X,Destinos,[X|LA],Caminho). %chamada recursiva
+    C1 is CI + C,
+    dfsVAux(X,Destinos,[X|LA],C1,Custo,Caminho). %chamada recursiva
 
 %%%%%%%%%%%%%%%%%%%%%
 %BFS
