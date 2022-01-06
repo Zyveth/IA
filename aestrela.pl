@@ -13,25 +13,20 @@
 
 % Código
 
-inicio(1).
-fim(17).
-
-resolveAEstrela(Caminho/Custo) :-
-    inicio(Nodo),
-    aestrela([[Nodo]/0/Capacidade], CaminhoInverso/Custo/_),
+resolveAEstrela(Inicio,Fim,Caminho/Custo) :-
+    aestrela(Fim,[[Inicio]/0/Capacidade], CaminhoInverso/Custo/_),
     reverse(CaminhoInverso, Caminho).
 
-aestrela(Caminhos, Caminho) :-
+aestrela(Fim,Caminhos, Caminho) :-
 	obtem_melhor(Caminhos, Caminho),
-	Caminho = [Nodo|_]/_/_,
-    fim(Nodo).
+	Caminho = [Fim|_]/_/_.
 
-aestrela(Caminhos, SolucaoCaminho) :-
+aestrela(Fim,Caminhos, SolucaoCaminho) :-
     obtem_melhor(Caminhos, MelhorCaminho),
     seleciona(MelhorCaminho, Caminhos, OutrosCaminhos),
     expandeAEstrela(MelhorCaminho, ExpCaminhos),
     append(OutrosCaminhos, ExpCaminhos, NovoCaminhos),
-    aestrela(NovoCaminhos, SolucaoCaminho).
+    aestrela(Fim,NovoCaminhos, SolucaoCaminho).
 
 obtem_melhor([Caminho], Caminho) :- !.
 
