@@ -13,7 +13,7 @@
 
 % Código
 
-gulosa_multipla(Inicio,Nodos,Caminho/Custo) :-
+gulosa(Inicio,Nodos,Caminho/Custo) :-
     findall(Permutacao,permutation(Nodos,Permutacao),Possiveis),
     gulosa_multipla_aux2(Inicio,Possiveis,Caminho/Custo).
     
