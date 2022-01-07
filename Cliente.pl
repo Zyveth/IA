@@ -8,23 +8,23 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Cliente(idCliente, Morada, Freguesia) -> {V,F}
 
-cliente(c1,m1_1,f1).
-cliente(c2,m1_2,f1).
-cliente(c3,m1_3,f1).
-cliente(c4,m1_4,f1).
-cliente(c5,m1_5,f1).
-cliente(c6,m1_6,f1).
-cliente(c7,m1_7,f1).
-cliente(c8,m1_8,f1).
-cliente(c9,m1_9,f1).
-cliente(c10,m1_10,f1).
-cliente(c11,m2_1,f2).
-cliente(c12,m2_2,f2).
-cliente(c13,m2_3,f2).
-cliente(c14,m2_4,f2).
-cliente(c15,m2_5,f2).
-cliente(c16,m2_6,f2).
-cliente(c17,m2_7,f2).
-cliente(c18,m2_8,f2).
-cliente(c19,m2_9,f2).
-cliente(c20,m2_10,f2).
+cliente(c1,1,f1).
+cliente(c2,2,f1).
+cliente(c3,3,f1).
+cliente(c4,4,f1).
+cliente(c5,5,f1).
+cliente(c6,6,f1).
+cliente(c7,7,f1).
+cliente(c8,8,f1).
+cliente(c9,9,f1).
+cliente(c10,10,f1).
+cliente(c11,11,f2).
+cliente(c12,12,f2).
+cliente(c13,13,f2).
+cliente(c14,14,f2).
+cliente(c15,15,f2).
+cliente(c16,16,f2).
+cliente(c17,17,f2).
+cliente(c18,18,f2).
+cliente(c19,19,f2).
+cliente(c20,20,f2).
