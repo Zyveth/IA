@@ -11,6 +11,10 @@ permutation([T|H], X) :-
     append(L1, [T], X1), 
     append(X1, L2, X).
 
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
+
 %%%%%%%%%%%%%%%%%%%%%
 %DFS
 %%%%%%%%%%%%%%%%%%%%%
@@ -127,48 +131,65 @@ bfs_multipla_aux(Inicio,[Nodo|Nodos],Caminho/Custo) :-
 %Busca Iterativa Limitada em Profundidade  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-resolveBILP(Origem,Destino, Max, Solucao) :- 
-    caminho(Origem, Destino, Sol),
+resolveBILP(Origem,Destino, Max, Custo, Solucao) :- 
+    caminho(Origem, Destino, Custo, Sol),
     length(Sol, Comp),
     reverse(Sol,Solucao),
     ( (Comp =< Max) ; (Comp > Max), !, fail).
 
-caminho(Nodo, Nodo, [Nodo]).
-caminho(Primeiro, Ultimo, [Ultimo|Caminho]) :- 
-    caminho(Primeiro, Penultimo, Caminho),
-    aresta(Penultimo, Ultimo,_),
-    not(member(Ultimo, Caminho)).
+caminho(Nodo, Nodo, 0,[Nodo]).
+caminho(Primeiro, Ultimo, Custo,[Ultimo|Caminho]) :- 
+    caminho(Primeiro, Penultimo, C1,Caminho),
+    aresta(Penultimo, Ultimo,C2),
+    not(member(Ultimo, Caminho)),
+    Custo is C1 + C2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-bilp(Inicio,Nodos,Caminho/Custo) :-
+bilp(Inicio,Nodos,Max,Caminho/Custo) :-
     findall(Permutacao,permutation(Nodos,Permutacao),Possiveis),
-    bilp_multipla_aux2(Inicio,Possiveis,Caminho1/Custo1),
+    bilp_multipla_aux2(Inicio,Possiveis,Max,Caminho1/Custo1),
     last(Caminho1,Last),
-    resolveBILP(Last,Inicio,Custo2,Caminho2),
+    resolveBILP(Last,Inicio,Max,Custo2,Caminho2),
     removehead(Caminho2,Caminho3),
     append(Caminho1,Caminho3,Caminho),
     Custo is Custo1 + Custo2.
     
-bilp_multipla_aux2(Inicio,[Nodos],Caminho/Custo) :-
-    bilp_multipla_aux(Inicio,Nodos,Caminho/Custo),
+bilp_multipla_aux2(Inicio,[Nodos],Max,Caminho/Custo) :-
+    bilp_multipla_aux(Inicio,Nodos,Max,Caminho/Custo),
     !.
 
-bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
-    bilp_multipla_aux(Inicio , Nodos1, Caminho1/Custo1),
-    bilp_multipla_aux(Inicio , Nodos2, Caminho2/Custo2),
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
+    bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2),
     Custo1 =< Custo2,
-    bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Caminho/Custo),
+    bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
+    !.
+%%
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
+    not(bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2)),
+    Custo1 =< Custo2,
+    bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
     !.
 
-bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
-    bilp_multipla_aux2(Inicio,[Nodos2|Permutacoes],Caminho/Custo).
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
+    bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2),
+    Custo1 =< Custo2,
+    bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
+    !.
 
-bilp_multipla_aux(Inicio,[],[]/0) :- !.
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux2(Inicio,[Nodos2|Permutacoes],Max,Caminho/Custo).
 
-bilp_multipla_aux(Inicio,[Nodo|Nodos],Caminho/Custo) :-
-    resolveBILP(Inicio,Nodo,Custo1,Caminho1),
+bilp_multipla_aux(Inicio,[],_,[]/0) :- !.
+
+bilp_multipla_aux(Inicio,[Nodo|Nodos],Max,Caminho/Custo) :-
+    resolveBILP(Inicio,Nodo,Max,Custo1,Caminho1),
     !,
-    bilp_multipla_aux(Nodo,Nodos,Caminho2/Custo2),
+    length(Caminho1,L1),
+    M is Max - (L1 - 1),
+    bilp_multipla_aux(Nodo,Nodos,M,Caminho2/Custo2),
     removehead(Caminho2,Caminho3),
     append(Caminho1,Caminho3,Caminho),
     Custo is Custo1 + Custo2.
