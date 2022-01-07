@@ -61,20 +61,23 @@ dfsVAux(Actual,Dest,LA,CI,Custo,Caminho):-
 %BFS
 %%%%%%%%%%%%%%%%%%%%%
 
-bfs(Destino,Caminho):-
+bfs(Destino,Custo,Caminho):-
     origem(Origem),
-    bfsAux(Destino,[[Origem]],Caminho).
+    bfsAux(Destino,[([Origem],0)],Custo,Caminho).
+
+bfs(Origem,Destino,Custo,Caminho):-
+    bfsAux(Destino,[([Origem],0)],Custo,Caminho).
 
 %condicao paragem: qd destino = vertice à cabeça do caminho actual. Basta inverter caminho
-bfsAux(Destino,[[Destino|T]|_],Caminho):-
+bfsAux(Destino,[([Destino|T],C)|_],Custo,Caminho):-
     reverse([Destino|T],Cam),
-    append(Cam,T,Caminho).
+    append(Cam,T,Caminho),
+    Custo is C + C.
 
-bfsAux(Destino,[LA|Outros],Caminho):-
-    LA=[Actual|_],
-    findall([X|LA],(Destino\==Actual,ligacao(Actual,X),\+ member(X,LA)),Novos), % calcular todos os vertices adjacentes não visitados e gerar um caminho novo c/ cada vertice e caminho actual
+bfsAux(Destino,[([Actual|T],CA)|Outros],Custo,Caminho):-
+    findall(([X,Actual|T],C),(Destino\==Actual,aresta(Actual,X,CustoE),\+ member(X,[Actual|T]),C is CA + CustoE),Novos), % calcular todos os vertices adjacentes não visitados e gerar um caminho novo c/ cada vertice e caminho actual
     append(Outros,Novos,Todos), %caminhos novos são colocados no final da lista
-    bfsAux(Destino,Todos,Caminho). %chamada recursiva
+    bfsAux(Destino,Todos,Custo,Caminho). %chamada recursiva
 
 %%%%%%%%%%%%%%%%%%%%%
 %BFS MAIS Q 1 ENTREGA #TODO
