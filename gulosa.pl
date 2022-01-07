@@ -15,7 +15,12 @@
 
 gulosa(Inicio,Nodos,Caminho/Custo) :-
     findall(Permutacao,permutation(Nodos,Permutacao),Possiveis),
-    gulosa_multipla_aux2(Inicio,Possiveis,Caminho/Custo).
+    gulosa_multipla_aux2(Inicio,Possiveis,Caminho1/Custo1),
+    last(Caminho1,Last),
+    resolveGulosa(Last,Inicio,Caminho2/Custo2),
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
     
 gulosa_multipla_aux2(Inicio,[Nodos],Caminho/Custo) :-
     gulosa_multipla_aux(Inicio,Nodos,Caminho/Custo),
@@ -29,9 +34,6 @@ gulosa_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
     !.
 
 gulosa_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
-    gulosa_multipla_aux(Inicio , Nodos1, Caminho1/Custo1),
-    gulosa_multipla_aux(Inicio , Nodos2, Caminho2/Custo2),
-    Custo2 =< Custo1,
     gulosa_multipla_aux2(Inicio,[Nodos2|Permutacoes],Caminho/Custo).
 
 permutation([], []).
@@ -48,13 +50,12 @@ gulosa_multipla_aux(Inicio,[Nodo|Nodos],Caminho/Custo) :-
     resolveGulosa(Inicio,Nodo,Caminho1/Custo1),
     !,
     gulosa_multipla_aux(Nodo,Nodos,Caminho2/Custo2),
-    last([Nodo|Nodos],Last),
-    resolveGulosa(Inicio,Last,Caminho3/Custo3),
-    !,
-    reverse(Caminho3,Caminho4),
-    append(Caminho1,Caminho2,Caminho5),
-    append(Caminho5,Caminho4,Caminho),
-    Custo is Custo1 + Custo2 + Custo3.
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
+
+removehead([],[]).
+removehead([_|Tail], Tail).
 
 resolveGulosa(Inicio,Fim,Caminho/Custo) :-
     agulosa(Fim,[[Inicio]/0/Est], CaminhoInverso/Custo/_),

@@ -15,7 +15,12 @@
 
 aestrela(Inicio,Nodos,Caminho/Custo) :-
     findall(Permutacao,permutation(Nodos,Permutacao),Possiveis),
-    aestrela_multipla_aux2(Inicio,Possiveis,Caminho/Custo).
+    aestrela_multipla_aux2(Inicio,Possiveis,Caminho1/Custo1),
+    last(Caminho1,Last),
+    resolveAEstrela(Last,Inicio,Caminho2/Custo2),
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
     
 aestrela_multipla_aux2(Inicio,[Nodos],Caminho/Custo) :-
     aestrela_multipla_aux(Inicio,Nodos,Caminho/Custo),
@@ -29,9 +34,6 @@ aestrela_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
     !.
 
 aestrela_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
-    aestrela_multipla_aux(Inicio , Nodos1, Caminho1/Custo1),
-    aestrela_multipla_aux(Inicio , Nodos2, Caminho2/Custo2),
-    Custo2 =< Custo1,
     aestrela_multipla_aux2(Inicio,[Nodos2|Permutacoes],Caminho/Custo).
 
 permutation([], []).
@@ -48,14 +50,11 @@ aestrela_multipla_aux(Inicio,[Nodo|Nodos],Caminho/Custo) :-
     resolveAEstrela(Inicio,Nodo,Caminho1/Custo1),
     !,
     aestrela_multipla_aux(Nodo,Nodos,Caminho2/Custo2),
-    last([Nodo|Nodos],Last),
-    resolveAEstrela(Last,Inicio,Caminho3/Custo3),
-    !,
-    removehead(Caminho3,Caminho4),
-    append(Caminho1,Caminho6,Caminho5),
-    append(Caminho5,Caminho4,Caminho),
-    Custo is Custo1 + Custo2 + Custo3.
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
 
+removehead([],[]).
 removehead([_|Tail], Tail).
 
 resolveAEstrela(Inicio,Fim,Caminho/Custo) :-
