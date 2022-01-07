@@ -164,23 +164,28 @@ bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
     Custo1 =< Custo2,
     bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
     !.
-%%
-bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
-    bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
-    not(bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2)),
-    Custo1 =< Custo2,
-    bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
-    !.
 
 bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
     bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
     bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2),
-    Custo1 =< Custo2,
+    Custo2 =< Custo1,
+    bilp_multipla_aux2(Inicio,[Nodos2|Permutacoes],Max,Caminho/Custo),
+    !.
+
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1),
+    nao(bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2)),
     bilp_multipla_aux2(Inicio,[Nodos1|Permutacoes],Max,Caminho/Custo),
     !.
 
 bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
-    bilp_multipla_aux2(Inicio,[Nodos2|Permutacoes],Max,Caminho/Custo).
+    nao(bilp_multipla_aux(Inicio , Nodos1, Max,Caminho1/Custo1)),
+    bilp_multipla_aux(Inicio , Nodos2, Max,Caminho2/Custo2),
+    bilp_multipla_aux2(Inicio,[Nodos2|Permutacoes],Max,Caminho/Custo),
+    !.
+
+bilp_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Max,Caminho/Custo) :-
+    bilp_multipla_aux2(Inicio,[Permutacoes],Max,Caminho/Custo).
 
 bilp_multipla_aux(Inicio,[],_,[]/0) :- !.
 
