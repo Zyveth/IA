@@ -33,6 +33,44 @@ dfsAux(Actual,Destino,LA,CI,Custo,Caminho):-
     C1 is CI+C,
     dfsAux(X,Destino,[X|LA],C1,Custo,Caminho). %chamada recursiva
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+dfs(Inicio,Nodos,Caminho/Custo) :-
+    findall(Permutacao,permutation(Nodos,Permutacao),Possiveis),
+    dfs_multipla_aux2(Inicio,Possiveis,Caminho1/Custo1),
+    last(Caminho1,Last),
+    resolveDFS(Last,Inicio,Custo2,Caminho2),
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
+    
+dfs_multipla_aux2(Inicio,[Nodos],Caminho/Custo) :-
+    dfs_multipla_aux(Inicio,Nodos,Caminho/Custo),
+    !.
+
+dfs_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
+    dfs_multipla_aux(Inicio , Nodos1, Caminho1/Custo1),
+    dfs_multipla_aux(Inicio , Nodos2, Caminho2/Custo2),
+    Custo1 =< Custo2,
+    dfs_multipla_aux2(Inicio,[Nodos1|Permutacoes],Caminho/Custo),
+    !.
+
+dfs_multipla_aux2(Inicio,[Nodos1,Nodos2 |Permutacoes],Caminho/Custo) :-
+    dfs_multipla_aux2(Inicio,[Nodos2|Permutacoes],Caminho/Custo).
+
+dfs_multipla_aux(Inicio,[],[]/0) :- !.
+
+dfs_multipla_aux(Inicio,[Nodo|Nodos],Caminho/Custo) :-
+    resolveDFS(Inicio,Nodo,Custo1,Caminho1),
+    !,
+    dfs_multipla_aux(Nodo,Nodos,Caminho2/Custo2),
+    removehead(Caminho2,Caminho3),
+    append(Caminho1,Caminho3,Caminho),
+    Custo is Custo1 + Custo2.
+
+removehead([],[]).
+removehead([_|Tail], Tail).
+
 %%%%%%%%%%%%%%%%%%%%%
 %BFS
 %%%%%%%%%%%%%%%%%%%%%
